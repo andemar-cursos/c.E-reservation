@@ -17,17 +17,27 @@ import com.platzi.ereservation.modelo.Cliente;
 import com.platzi.ereservation.negocio.services.ClienteService;
 import com.platzi.ereservation.vista.resources.vo.ClienteVO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * Clase que representa el servicio web de cliente - Con @RestController se
  * expecifica que la clase sera usada como web service. - Con @RequestMapping
  * permite a la clase ser expuesta como servicio. y expecificar la direccion web
  * al ser llamado.
  * 
+ * - Con @Api(tags = "className") Se expecifica el uso de esta clase en swagger como cliente
+ * 
+ *  LOS CODIGOS DE STATUS SON 201=ACCION SATISFACTORIA - 400=NO SE PUEDE REALIZAR - 404=NO ENCONTRADO
+ * 
  * @author andemar-pc
  *
  */
 @RestController
 @RequestMapping("/api/cliente")
+@Api(tags = "cliente")
 public class ClienteResource {
 
 	private final ClienteService clienteService;
@@ -36,13 +46,26 @@ public class ClienteResource {
 		this.clienteService = clienteService;
 	}
 
+	
+	
+	
+	
+	
+	
 	/**
 	 * Con @postMapping se expecifica que se realizara una accion de creacion.
 	 * 
+	 * - Con @ApiOperation(value = "accion", notes = "Descripcion") Se expecifica la accion y
+	 * descripcion que hara el webService.
+	 * 
+	 * - Con @ApiResponses, se expecifica un mensage, dependiendo del resultado del servicio.
 	 * @param clienteVo
 	 * @return
 	 */
 	@PostMapping
+	@ApiOperation(value = "Crear cliente", notes = "Servicio para crear un nuevo cliente")
+	@ApiResponses(value = {@ApiResponse(code = 201, message = "Cliente creado correctamente"),
+				   		   @ApiResponse(code = 400, message = "Solicitud invalida")})
 	public ResponseEntity<Cliente> createCliente(@RequestBody ClienteVO clienteVo) {
 		/**
 		 * Se pasan los atributos de la clase clienteVo a cliente. Esto se hace ya que
@@ -58,6 +81,14 @@ public class ClienteResource {
 		return new ResponseEntity<>(this.clienteService.create(cliente), HttpStatus.CREATED);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Con @putMapping("/{id}") se expecifica que es un servicio de update, el cual
 	 * recibe un dato, el cual sirve para saber si existe o no en la DB.
@@ -66,6 +97,10 @@ public class ClienteResource {
 	 * @return
 	 */
 	@PutMapping("/{identificacion}")
+	@ApiOperation(value = "Actualizar cliente", notes = "Servicio para actualizar un cliente")
+	@ApiResponses(value = {@ApiResponse(code = 201, message = "Cliente actualizado correctamente"),
+	   		   			   @ApiResponse(code = 404, message = "Cliente no encontrado")})
+	
 	public ResponseEntity<Cliente> updateCliente(@PathVariable("identificacion") String identificacion, ClienteVO clienteVo) {
 		
 		//Con esta linea se busca la existencia en la DB del indentificador del cliente a update. 
@@ -80,10 +115,15 @@ public class ClienteResource {
 			cliente.setTelefonoCli(clienteVo.getTelefonoCli());
 			cliente.setEmailCli(clienteVo.getEmailCli());
 		}
-
 		// retorna el cliente update y un status.
 		return new ResponseEntity<>(this.clienteService.update(cliente), HttpStatus.OK);
 	}
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Con @DeleteMapping("/{id}") se expecifica que es un servicio de delete, el cual
@@ -91,6 +131,9 @@ public class ClienteResource {
 	 * @param identificacion
 	 */
 	@DeleteMapping("/{identificacion}")
+	@ApiOperation(value = "Eliminar cliente", notes = "Servicio para eliminar un cliente")
+	@ApiResponses(value = {@ApiResponse(code = 201, message = "Cliente eliminado correctamente"),
+	   		   			   @ApiResponse(code = 404, message = "Cliente no encontrado")})
 	public void removeCliente(@PathVariable("identificacion") String identificacion) {
 		Cliente cliente = this.clienteService.findByIdentificacion(identificacion);
 		
@@ -100,12 +143,22 @@ public class ClienteResource {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Con @GetMapping se expecifica que es un servicio que retorna el resultado de una
 	 * consulta, en este caso una lista de clientes.
 	 * @return
 	 */
 	@GetMapping
+	@ApiOperation(value = "Listar cliente", notes = "Servicio para listar todos los clientes")
+	@ApiResponses(value = {@ApiResponse(code = 201, message = "Clientes encontrados"),
+	   		   			   @ApiResponse(code = 404, message = "Clientes no encontrados")})
 	public ResponseEntity<List<Cliente>> findAll(){
 		return ResponseEntity.ok(this.clienteService.findAll());
 	}
