@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,7 +26,6 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="reserva")
-
 public class Reserva {
 	@Id
 	@GeneratedValue(generator="system-uuid")
@@ -46,4 +46,5 @@ public class Reserva {
 	@ManyToOne
 	@JoinColumn(name="idCli")
 	private Cliente cliente;
+	
 }
