@@ -1,5 +1,7 @@
 package com.platzi.ereservation.negocio.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +66,17 @@ public class ClienteService {
 	 */
 	public Cliente findByIdentificacion(String identificacionCli) {
 		return this.clienteRepository.findByIdentificacion(identificacionCli);
+	}
+	
+	
+	/**
+	 * Se unsa clienteRepository.findAll() ya que el JPA obtiene todos los datos
+	 * de la tabla. (No confundir el actual metodo findAll con el findAll de
+	 * JPARepository. 
+	 * @return
+	 */
+	public List<Cliente> findAll() {
+		return this.clienteRepository.findAll();
 	}
 
 }
